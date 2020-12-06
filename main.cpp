@@ -11,8 +11,8 @@ int main() {
             m[i][j] = i * 2 + (j + 1);
         }
     }
-    cout << m << endl;
-    cout << m.inv() << endl;
-    cout << m * m.inv() << endl;
+    vector<int> v{1, 2, 3};
+    Matrix<int> mat(v);
+    cout << mat << endl;
 }
 

@@ -13,6 +13,15 @@ struct Matrix {
 
     Matrix(int n, int m) : r(n), c(m), M(n, vector<T>(m)){}
     Matrix(int n, int m, T val) : r(n), c(m), M(n, vector<T>(m, val)){}
+    Matrix(const vector<T>& v) {
+        r = v.size();
+        c = 1;
+        M = vector<vector<T>>(r, vector<T>(1));
+        for (int i = 0; i < r; ++i) {
+            M[i][0] = v[i];
+        }
+        assert(M.size() == r && M[0].size() == c);
+    }
 
     inline const vector<T> &operator[](int k) const { return (M.at(k)); }
     inline vector<T> &operator[](int k) { return (M.at(k)); }
