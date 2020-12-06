@@ -15,13 +15,12 @@ int main() {
     t[1][0] = 2;
     t[2][0] = 3;
 
+    if(!(m != unvech(t))) {
+        cout << "unveched successfully." << endl;
+    }
 
-    cout << m << endl;
-    cout << t.c << endl;
-    cout << unvech(t) << endl;
-
-    cout << endl;
-    cout << t << endl;
-    cout << vech(m) << endl;
+    if(t == vech(m)) {
+        cout << "veched successfully." << endl;
+    }
 }
 
