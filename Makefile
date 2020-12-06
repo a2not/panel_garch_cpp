@@ -1,6 +1,9 @@
 CC = g++
-CFLAGS = -std=c++17 -g -Wall -I ../eigen
+CFLAGS = -std=c++17 -g -Wall
 TARGET = panel_garch
+
+main: main.cpp
+	$(CC) $(CFLAGS) main.cpp -o main.out
 
 clean:
 	rm -r *.out *.out.dSYM*
@@ -9,4 +12,4 @@ clean:
 	$(CC) $(CFLAGS) $*.cpp -o $*.out
 	./$*.out
 
-.PHONY: % clean
+.PHONY: main % clean
