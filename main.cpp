@@ -5,6 +5,10 @@
 using namespace std;
  
 int main() {
+    /*
+     [1, 2, 3]
+     [4, 5, 6]
+    */
     Matrix<int> m(2, 3);
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 3; ++j) {
@@ -12,15 +16,6 @@ int main() {
         }
     }
     cout << m << endl;
-
-    Matrix<int> t(3, 2);
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 2; ++j) {
-            t[i][j] = i * 2 + j + 7;
-        }
-    }
-    cout << t << endl;
-
-    cout << m * t << endl;
+    cout << m.t() << endl;
 }
 
