@@ -60,6 +60,20 @@ struct Matrix {
     Matrix<T> operator-(const Matrix<T> &B) const { return Matrix<T>(*this) -= B; }
     Matrix<T> operator*(const Matrix<T> &B) const { return Matrix<T>(*this) *= B; }
 
+    bool operator==(const Matrix<T> &B) {
+        if(r != B.r) return false;
+        if(c != B.c) return false;
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < c; ++j) {
+                if((*this)[i][j] != B[i][j]) return false;
+            }
+        }
+        return true;
+    }
+    bool operator!=(const Matrix<T> &B) {
+        return !((*this) == B);
+    }
+
     Matrix<T> t() {
         Matrix<T> res(c, r);
         for (int i = 0; i < r; ++i) {
