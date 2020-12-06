@@ -5,17 +5,14 @@
 using namespace std;
  
 int main() {
-    /*
-     [1, 2, 3]
-     [4, 5, 6]
-    */
-    Matrix<int> m(2, 3);
+    Matrix<double> m(2, 2);
     for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            m[i][j] = i * 3 + (j + 1);
+        for (int j = 0; j < 2; ++j) {
+            m[i][j] = i * 2 + (j + 1);
         }
     }
     cout << m << endl;
-    cout << m.t() << endl;
+    cout << m.inv() << endl;
+    cout << m * m.inv() << endl;
 }
 

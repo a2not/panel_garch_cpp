@@ -78,6 +78,34 @@ struct Matrix {
         return res;
     }
 
+    Matrix<T> inv() const {
+        assert(c == r);
+        // Gaussian elimination; O(n ^ 3)
+        // initialize resulting matrix as Identity matrix
+        Matrix<T> res(c, c, 0);
+        for (int i = 0; i < c; ++i) {
+            res[i][i] = 1;
+        }
+        Matrix<T> tmp = Matrix<T>(*this);
+        // elimination steps
+        for (int i = 0; i < c; ++i) {
+            double coef = (double)1.0 / tmp[i][i];
+            for (int j = 0; j < c; ++j) {
+                tmp[i][j] *= coef;
+                res[i][j] *= coef;
+            }
+            for (int j = 0; j < c; ++j) {
+                if(i == j) continue;
+                double coef = tmp[j][i];
+                for (int k = 0; k < c; ++k) {
+                    tmp[j][k] -= tmp[i][k] * coef;
+                    res[j][k] -= res[i][k] * coef;
+                }
+            }
+        }
+        return res;
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const Matrix<T> &p) {
         return os << p.M;
     }
