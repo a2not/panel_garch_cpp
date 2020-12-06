@@ -115,6 +115,41 @@ struct Matrix {
         return res;
     }
 
+    double det() const {
+        // if the matrix is not square, vectors must be linearly dependent
+        if(c != r) return 0;
+        
+        // Gaussian elimination; O(n ^ 3)
+        Matrix<T> tmp = Matrix<T>(*this);
+        const double eps = 1e-9;
+        double res = 1;
+        for (int i = 0; i < c; ++i) {
+            int k = i;
+            for (int j = i+1; j < c; ++j) {
+                if(abs(tmp[j][i]) > abs(tmp[k][i])) {
+                    k = j;
+                }
+            }
+            if(abs(tmp[k][i]) < eps) {
+                return 0;
+            }
+            swap(tmp[i], tmp[k]);
+            if(i != k) res = -res;
+            res *= tmp[i][i];
+            for (int j = i+1; j < c; ++j) {
+                tmp[i][j] /= tmp[i][i];
+            }
+            for (int j = 0; j < c; ++j) {
+                if(j != i && abs(tmp[j][i]) > eps) {
+                    for (int k = i+1; k < c; ++k) {
+                        tmp[j][k] -= tmp[i][k] * tmp[j][i];
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const Matrix<T> &p) {
         return os << p.M;
     }
