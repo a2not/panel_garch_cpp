@@ -22,5 +22,7 @@ int main() {
     if(t == vech(m)) {
         cout << "veched successfully." << endl;
     }
+
+    cout << Matrix<int>(2, 2, 18) << endl;
 }
 
