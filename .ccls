@@ -1,0 +1,7 @@
+g++
+-std=c++17
+-g
+-Wall
+-fsanitize=undefined
+-I/usr/local/Cellar/gcc/10.2.0/include/c++/10.2.0/x86_64-apple-darwin19
+-I/usr/local/Cellar/gcc/10.2.0/include/c++/10.2.0
