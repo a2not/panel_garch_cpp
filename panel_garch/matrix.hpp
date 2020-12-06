@@ -11,15 +11,9 @@ struct Matrix {
     int r, c;
     vector<vector<T>> M;
 
-    Matrix(int n, int m) : r(n), c(m){
-        M = vector<vector<T>>(n, vector<T>(m));
-    }
+    Matrix(int n, int m) : r(n), c(m), M(n, vector<T>(m)){}
 
-    Matrix(int n, int m, T val) {
-        r = n;
-        c = m;
-        M = vector<vector<T>>(n, vector<T>(m, val));
-    }
+    Matrix(int n, int m, T val) : r(n), c(m), M(n, vector<T>(m, val)){}
 
     inline const vector<T> &operator[](int k) const { return (M.at(k)); }
     inline vector<T> &operator[](int k) { return (M.at(k)); }
@@ -60,7 +54,7 @@ struct Matrix {
     Matrix<T> operator-(const Matrix<T> &B) const { return Matrix<T>(*this) -= B; }
     Matrix<T> operator*(const Matrix<T> &B) const { return Matrix<T>(*this) *= B; }
 
-    bool operator==(const Matrix<T> &B) {
+    bool operator==(const Matrix<T> &B) const {
         if(r != B.r) return false;
         if(c != B.c) return false;
         for (int i = 0; i < r; ++i) {
@@ -70,11 +64,11 @@ struct Matrix {
         }
         return true;
     }
-    bool operator!=(const Matrix<T> &B) {
+    bool operator!=(const Matrix<T> &B) const {
         return !((*this) == B);
     }
 
-    Matrix<T> t() {
+    Matrix<T> t() const {
         Matrix<T> res(c, r);
         for (int i = 0; i < r; ++i) {
             for (int j = 0; j < c; ++j) {
