@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cassert>
 #include <vector>
 
 using std::vector;
@@ -10,7 +11,9 @@ struct Matrix {
     int r, c;
     vector<vector<T>> M;
 
-    Matrix(int n, int m) : r(n), c(m){}
+    Matrix(int n, int m) : r(n), c(m){
+        M = vector<vector<T>>(n, vector<T>(m));
+    }
 
     Matrix(int n, int m, T val) {
         r = n;
@@ -72,4 +75,3 @@ struct Matrix {
     }
 };
 
-matrix
