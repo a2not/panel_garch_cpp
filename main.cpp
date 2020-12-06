@@ -5,24 +5,22 @@
 using namespace std;
  
 int main() {
-    Matrix<int> m(2, 2);
-    m[0][0] = 1;
-    m[1][0] = 2;
-    m[0][1] = 2;
-    m[1][1] = 3;
-    Matrix<int> t(3, 1);
-    t[0][0] = 1;
-    t[1][0] = 2;
-    t[2][0] = 3;
-
-    if(!(m != unvech(t))) {
-        cout << "unveched successfully." << endl;
+    Matrix<int> m(2, 3);
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            m[i][j] = i * 3 + (j + 1);
+        }
     }
+    cout << m << endl;
 
-    if(t == vech(m)) {
-        cout << "veched successfully." << endl;
+    Matrix<int> t(3, 2);
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            t[i][j] = i * 2 + j + 7;
+        }
     }
+    cout << t << endl;
 
-    cout << Matrix<int>(2, 2, 18) << endl;
+    cout << m * t << endl;
 }
 
