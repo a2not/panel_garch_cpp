@@ -38,10 +38,9 @@ double spectral_radius_of_kroneckers(int iN, const Matrix<T> &vLambda) {
         mD[i][i] += varphi - eta;
     }
 
-    double res = 0;
     Matrix<T> kron = kronecker_product(mC, mC);
     kron += kronecker_product(mD, mD);
 
-    return res;
+    return kron.spectral_radius();
 }
 

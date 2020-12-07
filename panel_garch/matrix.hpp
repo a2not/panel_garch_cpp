@@ -228,6 +228,15 @@ struct Matrix {
         return res;
     }
 
+    double spectral_radius() const {
+        auto ev = (*this).eigenvals();
+        double res = 0;
+        for (int i = 0; i < ev.r; ++i) {
+            if(res < abs(ev[i][0])) res = abs(ev[i][0]);
+        }
+        return res;
+    }
+
     friend std::ostream &operator<<(std::ostream &os, const Matrix<T> &p) {
         return os << p.M;
     }
