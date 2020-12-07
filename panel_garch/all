@@ -1,3 +1,4 @@
+#include "panel_garch/kron"
 #include "panel_garch/matrix"
 #include "panel_garch/objfunc"
 #include "panel_garch/unvech"

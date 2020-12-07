@@ -10,9 +10,7 @@ int main() {
     m[0][1] = 2;
     m[1][0] = 3;
     m[1][1] = 4;
-    cout << m << endl;
-    cout << m * 3 << endl;
-    m *= 3;
-    cout << m << endl;
+    auto z = m;
+    cout << kronecker_product(m, z) << endl;
 }
 
