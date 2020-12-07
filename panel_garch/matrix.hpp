@@ -46,6 +46,14 @@ struct Matrix {
         }
         return *this;
     }
+    Matrix<T> &operator*=(const T &coef) {
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                (*this)[i][j] *= coef;
+            }
+        }
+        return (*this);
+    }
     Matrix<T> &operator*=(const Matrix<T> &B) {
         assert(c == B.r);
         vector<vector<T>> C(r, vector<T>(B.c, 0));
@@ -61,6 +69,7 @@ struct Matrix {
     }
     Matrix<T> operator+(const Matrix<T> &B) const { return Matrix<T>(*this) += B; }
     Matrix<T> operator-(const Matrix<T> &B) const { return Matrix<T>(*this) -= B; }
+    Matrix<T> operator*(const T &coef) const { return Matrix<T>(*this) *= coef; }
     Matrix<T> operator*(const Matrix<T> &B) const { return Matrix<T>(*this) *= B; }
 
     bool operator==(const Matrix<T> &B) const {
