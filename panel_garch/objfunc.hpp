@@ -4,8 +4,6 @@
 #include <cmath>
 #include "panel_garch/matrix"
 
-const double PI = acos(-1);
-
 template <typename T>
 double objective_function(int iN, int iT, const Matrix<T> &vLambda, const Matrix<T> &mU, const Matrix<T> &mSig) {
     assert(("vLambda not size (4, 1)", vLambda.r == 4 && vLambda.c == 1));

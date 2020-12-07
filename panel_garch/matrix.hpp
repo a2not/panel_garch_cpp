@@ -2,9 +2,13 @@
 
 #include <iostream>
 #include <cassert>
+#include <cmath>
 #include <vector>
 
 using std::vector;
+
+const double eps = 1e-9;
+const double PI = acos(-1);
 
 template <typename T>
 struct Matrix {
@@ -104,19 +108,19 @@ struct Matrix {
         for (int i = 0; i < c; ++i) {
             res[i][i] = 1;
         }
-        Matrix<T> tmp = Matrix<T>(*this);
+        Matrix<T> A = Matrix<T>(*this);
         // elimination steps
         for (int i = 0; i < c; ++i) {
-            double coef = (double)1.0 / tmp[i][i];
+            double coef = (double)1.0 / A[i][i];
             for (int j = 0; j < c; ++j) {
-                tmp[i][j] *= coef;
+                A[i][j] *= coef;
                 res[i][j] *= coef;
             }
             for (int j = 0; j < c; ++j) {
                 if(i == j) continue;
-                double coef = tmp[j][i];
+                double coef = A[j][i];
                 for (int k = 0; k < c; ++k) {
-                    tmp[j][k] -= tmp[i][k] * coef;
+                    A[j][k] -= A[i][k] * coef;
                     res[j][k] -= res[i][k] * coef;
                 }
             }
@@ -127,34 +131,99 @@ struct Matrix {
     double det() const {
         // if the matrix is not square, vectors must be linearly dependent
         if(c != r) return 0;
-        
+
         // Gaussian elimination; O(n ^ 3)
-        Matrix<T> tmp = Matrix<T>(*this);
-        const double eps = 1e-9;
+        Matrix<T> A = Matrix<T>(*this);
         double res = 1;
         for (int i = 0; i < c; ++i) {
             int k = i;
             for (int j = i+1; j < c; ++j) {
-                if(abs(tmp[j][i]) > abs(tmp[k][i])) {
+                if(abs(A[j][i]) > abs(A[k][i])) {
                     k = j;
                 }
             }
-            if(abs(tmp[k][i]) < eps) {
+            if(abs(A[k][i]) < eps) {
                 return 0;
             }
-            swap(tmp[i], tmp[k]);
+            swap(A[i], A[k]);
             if(i != k) res = -res;
-            res *= tmp[i][i];
+            res *= A[i][i];
             for (int j = i+1; j < c; ++j) {
-                tmp[i][j] /= tmp[i][i];
+                A[i][j] /= A[i][i];
             }
             for (int j = 0; j < c; ++j) {
-                if(j != i && abs(tmp[j][i]) > eps) {
+                if(j != i && abs(A[j][i]) > eps) {
                     for (int k = i+1; k < c; ++k) {
-                        tmp[j][k] -= tmp[i][k] * tmp[j][i];
+                        A[j][k] -= A[i][k] * A[j][i];
                     }
                 }
             }
+        }
+        return res;
+    }
+
+    Matrix<T> eigenvals() const {
+        assert(c == r);
+        // Jacobi eigenvalue method
+        Matrix<T> A = Matrix<T>(*this);
+        Matrix<T> B(c, c, 0);
+        for (int i = 0; i < c; ++i) B[i][i] = 1;
+
+        for (int k = 0; k < 100; ++k) {
+            // find maximum value
+            int p = 0, q = 0;
+            T maxval = 0;
+            for (int i = 0; i < c; ++i) {
+                for (int j = i+1; j < c; ++j) {
+                    if (maxval < abs(A[i][j])) {
+                        maxval = abs(A[i][j]);
+                        p = i, q = j;
+                    }
+                }
+            }
+
+            // find θ
+            double t = 0;
+            if (abs(A[p][p] - A[q][q]) < eps) {
+                // iff a_{pp} ＝ a_{qq}: θ = π/4
+                t = PI / 4.0;
+                if (A[p][p] < 0) t = -t;
+            } else {
+                // a_{pp} ≠ a_{qq}
+                t = atan(2.0 * A[p][q] / (A[p][p] - A[q][q])) / 2.0;
+            }
+
+            // Make matrix P with θ, then A = P^t × A × P
+            double cosine = cos(t);
+            double sine = sin(t);
+            // P^t × A
+            double t1 = 0, t2 = 0;
+            for (int i = 0; i < c; ++i) {
+                t1      =  A[p][i] * cosine + A[q][i] * sine;
+                t2 = -A[p][i] * sine + A[q][i] * cosine;
+                A[p][i] = t1;
+                A[q][i] = t2;
+                // 固有ベクトル
+                t1      =  B[p][i] * cosine + B[q][i] * sine;
+                t2      = -B[p][i] * sine + B[q][i] * cosine;
+                B[p][i] = t1;
+                B[q][i] = t2;
+            }
+            // A × P
+            for (int i = 0; i < c; ++i) {
+                t1      =  A[i][p] * cosine + A[i][q] * sine;
+                t2      = -A[i][p] * sine + A[i][q] * cosine;
+                A[i][p] = t1;
+                A[i][q] = t2;
+            }
+
+            // 収束判定
+            if (maxval < eps) break;
+        }
+
+        Matrix<T> res(c, 1, 0);
+        for (int i = 0; i < c; ++i) {
+            res[i][0] = A[i][i];
         }
         return res;
     }

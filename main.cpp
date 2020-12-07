@@ -5,12 +5,10 @@
 using namespace std;
  
 int main() {
-    Matrix<double> m(2, 2);
-    m[0][0] = 1;
-    m[0][1] = 2;
-    m[1][0] = 3;
-    m[1][1] = 4;
-    auto z = m;
-    cout << kronecker_product(m, z) << endl;
+    Matrix<double> m(4, 4, 1);
+    m[0][0] = m[1][1] = 5;
+    m[0][1] = m[1][0] = m[2][2] = m[3][3] = 4;
+    m[3][2] = m[2][3] = 2;
+    cout << m.eigenvals() << endl;
 }
 
