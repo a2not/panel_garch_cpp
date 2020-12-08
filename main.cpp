@@ -12,5 +12,6 @@ int main() {
     Matrix<double> mX;
     auto mY = DGP(vt, va, vSig, vl, 5, 5, 0, mX);
     cout << mX << endl;
+    cout << vt + 0.83 << endl;
 }
 

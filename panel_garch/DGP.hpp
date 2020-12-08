@@ -11,6 +11,8 @@ Matrix<T> DGP(const Matrix<T> &vTheta, const Matrix<T> &vAlpha,
         int iT, int iN, int iI, 
         Matrix<T> &mX) {
     assert(("vTheta not size (2, 1)", vTheta.r == 2 && vTheta.c == 1));
+    T phi = vTheta[0][0];
+    T beta = vTheta[1][0];
     assert(("vAlpha not size (iN, 1)", vAlpha.r == iN && vAlpha.c == 1));
     assert(("vLambda not size (4, 1)", vLambda.r == 4 && vLambda.c == 1));
     T gam = vLambda[0][0];
@@ -41,6 +43,12 @@ Matrix<T> DGP(const Matrix<T> &vTheta, const Matrix<T> &vAlpha,
         mD[i][i] += varphi - eta;
     }
 
+    Matrix<T> mK = mSig - mC * mSig * mC - mD * mSig * mD;
+
+    auto vMy = (vAlpha + 0.5) * (1.0 / (1.0 - phi));
+    auto mSy = (mSig + (1.0 / 12.0)) * (1.0 / (1.0 - phi * phi));
+
     Matrix<T> mY(iT, iN, 0);
     return mY;
 }
+

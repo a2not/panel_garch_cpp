@@ -31,6 +31,14 @@ struct Matrix {
     inline const vector<T> &operator[](int k) const { return (M.at(k)); }
     inline vector<T> &operator[](int k) { return (M.at(k)); }
 
+    Matrix<T> &operator+=(const T &c) {
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < c; ++j) {
+                (*this)[i][j] += c;
+            }
+        }
+        return *this;
+    }
     Matrix<T> &operator+=(const Matrix<T> &B) {
         assert(r == B.r);
         assert(c == B.c);
@@ -72,6 +80,7 @@ struct Matrix {
         M.swap(C);
         return (*this);
     }
+    Matrix<T> operator+(const T &c) const { return Matrix<T>(*this) += c; }
     Matrix<T> operator+(const Matrix<T> &B) const { return Matrix<T>(*this) += B; }
     Matrix<T> operator-(const Matrix<T> &B) const { return Matrix<T>(*this) -= B; }
     Matrix<T> operator*(const T &coef) const { return Matrix<T>(*this) *= coef; }
