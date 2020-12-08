@@ -15,6 +15,7 @@ struct Matrix {
     int r, c;
     vector<vector<T>> M;
 
+    Matrix() = default;
     Matrix(int n, int m) : r(n), c(m), M(n, vector<T>(m)){}
     Matrix(int n, int m, T val) : r(n), c(m), M(n, vector<T>(m, val)){}
     Matrix(const vector<T>& v) {

@@ -5,11 +5,12 @@
 using namespace std;
  
 int main() {
-    Matrix<double> m(4, 4, 1);
-    m[0][0] = m[1][1] = 5;
-    m[0][1] = m[1][0] = m[2][2] = m[3][3] = 4;
-    m[3][2] = m[2][3] = 2;
-    cout << m.eigenvals() << endl;
-    cout << m.spectral_radius() << endl;
+    Matrix<double> vt(2, 1, 0);
+    Matrix<double> va(5, 1, 0);
+    Matrix<double> vSig(15, 1, 3);
+    Matrix<double> vl(4, 1, 0);
+    Matrix<double> mX;
+    auto mY = DGP(vt, va, vSig, vl, 5, 5, 0, mX);
+    cout << mX << endl;
 }
 
