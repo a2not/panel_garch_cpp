@@ -23,12 +23,12 @@ Matrix<T> DGP(const Matrix<T> &vTheta, const Matrix<T> &vAlpha,
     auto mSig = unvech(vSigma);
     assert(("mSig not size (iN, iN)", mSig.r == iN && mSig.c == iN));
 
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
     // Matrix with size (iT * iN), 
     // elements are generated with Uniform dist over [0, 1)
     if (!(mX.r == iT && mX.c == iN)) {
         mX = Matrix<T>(iT, iN, 0);
-        std::default_random_engine generator;
-        std::uniform_real_distribution<double> distribution(0.0, 1.0);
         for (int i = 0; i < iT; ++i) {
             for (int j = 0; j < iN; ++j) {
                 mX[i][j] = distribution(generator);
@@ -49,6 +49,26 @@ Matrix<T> DGP(const Matrix<T> &vTheta, const Matrix<T> &vAlpha,
     auto mSy = (mSig + (1.0 / 12.0)) * (1.0 / (1.0 - phi * phi));
 
     Matrix<T> mY(iT, iN, 0);
+
+    auto mH = mSig;
+
+    for (int t = 0; t < iT; ++t) {
+        Matrix<T> vRand(iN, 1, 0);
+        for (int i = 0; i < iN; ++i) {
+            vRand[i][0] = distribution(generator);
+        }
+        auto vU = sqrtm(mH) * vRand;
+
+        for (int i = 0; i < iN; ++i) {
+            if(t == 0) mY[0][i] = vU[i] + vMy[i];
+            else {
+                mY[t][i] = vAlpha[i] + (phi * mY[t-1][i]) + (beta * mX[t][i]) + vU[i];
+            }
+        }
+
+        mH = mK + mC * vU * vU.t() * mC + mD * mH * mD;
+    }
+
     return mY;
 }
 
